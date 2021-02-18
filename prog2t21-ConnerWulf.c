@@ -37,7 +37,7 @@ void * thread1(void *arg)
 
     temp = jumps;
     line++;
-    sem_wait(&semaphore)
+    sem_wait(&semaphore);
       counter->value = counter->value + 1;
 	    counter->value = counter->value * 2;
 	    counter->value = counter->value / 2;
@@ -49,7 +49,7 @@ void * thread1(void *arg)
         line += 100;
         jumps++;
       }
-      sem_post(&semaphore)
+      sem_post(&semaphore);
 
   }
 	printf("from process1 counter  =  %d, jumps %d \n", counter->value, jumps);
@@ -70,12 +70,12 @@ void * thread2(void *arg)
 
 
         line++;
-        sem_wait(&semaphore)
+        sem_wait(&semaphore);
         /* Critical Section */
 	       counter->value = counter->value + 1;
 	       counter->value = counter->value * 2;
 	       counter->value = counter->value / 2;
-         sem_post(&semaphore)
+         sem_post(&semaphore);
 
 
    }
