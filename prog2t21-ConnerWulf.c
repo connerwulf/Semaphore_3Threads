@@ -20,7 +20,8 @@ struct shared_dat
 
 struct shared_dat  *counter;
 int getpid();
-pthread_mutex_t mutex;
+//pthread_mutex_t mutex;
+sem_t semaphore;
 int jumps=0;
 
 /****************************************************************
@@ -36,10 +37,7 @@ void * thread1(void *arg)
 
     temp = jumps;
     line++;
-    while(pthread_mutex_trylock(&mutex) != 0)
-    {
-      //Do nothing
-    }
+    sem_wait(&semaphore)
       counter->value = counter->value + 1;
 	    counter->value = counter->value * 2;
 	    counter->value = counter->value / 2;
@@ -51,7 +49,7 @@ void * thread1(void *arg)
         line += 100;
         jumps++;
       }
-      pthread_mutex_unlock(&mutex);
+      sem_post(&semaphore)
 
   }
 	printf("from process1 counter  =  %d, jumps %d \n", counter->value, jumps);
@@ -72,16 +70,13 @@ void * thread2(void *arg)
 
 
         line++;
-        while(pthread_mutex_trylock(&mutex) != 0)
-        {
-
-        }
+        sem_wait(&semaphore)
         /* Critical Section */
 	       counter->value = counter->value + 1;
 	       counter->value = counter->value * 2;
 	       counter->value = counter->value / 2;
-         pthread_mutex_unlock(&mutex);
-  
+         sem_post(&semaphore)
+
 
    }
 	   printf("from process2 counter = %d\n", counter->value);
@@ -100,7 +95,7 @@ int main()
   //pthread_t	tid3[1];     /* process id for thread 2 */
   pthread_attr_t	attr[1];     /* attribute pointer array */
 
-	pthread_mutex_init(&mutex,NULL);
+	sem_init(&semaphore,0,1);
   counter = (struct shared_dat *) malloc(sizeof(struct shared_dat));
 
 	/* initialize shared memory to 0 */
