@@ -83,6 +83,29 @@ void * thread2(void *arg)
 return(NULL);
 }
 
+
+void * thread3(void *arg)
+{
+	int line = 0;
+
+	while (line < 2750000)
+	{
+
+
+        line++;
+        sem_wait(&semaphore);
+        /* Critical Section */
+	       counter->value = counter->value + 1;
+	       counter->value = counter->value * 2;
+	       counter->value = counter->value / 2;
+         sem_post(&semaphore);
+
+
+   }
+	   printf("from process3 counter = %d\n", counter->value);
+return(NULL);
+}
+
 /****************************************************************
 *                  Main Body                                    *
 ****************************************************************/
@@ -113,7 +136,7 @@ int main()
 /* Create the threads */
 
   pthread_create(&tid2[0], &attr[0], thread2, NULL);
-  pthread_create(&tid3[0], &attr[0], thread2, NULL);
+  pthread_create(&tid3[0], &attr[0], thread3, NULL);
   pthread_create(&tid1[0], &attr[0], thread1, NULL);
 
 
