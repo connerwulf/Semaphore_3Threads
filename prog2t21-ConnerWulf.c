@@ -6,7 +6,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <stdlib.h>
-
+#include <semaphore.h>
 /* Student: Conner Wulf. */
 
 //Global Variables
